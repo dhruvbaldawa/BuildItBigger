@@ -1,10 +1,7 @@
 package com.udacity.gradle.builditbigger;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 
-import com.dhruvb.jokeactivity.JokeDisplayActivity;
 import com.dhruvb.jokeprovider.backend.myApi.MyApi;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
@@ -16,12 +13,16 @@ import java.io.IOException;
 /**
  * Created by dhruv on 25/5/16.
  */
-public class FetchJokeAsyncTask extends AsyncTask<Context, Void, String> {
+public class FetchJokeAsyncTask extends AsyncTask<FetchJokeAsyncTask.ResultCallback, Void, String> {
     private static MyApi myApiService = null;
-    private Context context;
+    private ResultCallback mResultCallback;
+
+    public interface ResultCallback {
+        void onResult(String result);
+    }
 
     @Override
-    protected String doInBackground(Context... params) {
+    protected String doInBackground(ResultCallback... params) {
         if (myApiService == null) {
             MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null)
@@ -36,7 +37,7 @@ public class FetchJokeAsyncTask extends AsyncTask<Context, Void, String> {
             myApiService = builder.build();
         }
 
-        context = params[0];
+        mResultCallback = params[0];
         try {
             return myApiService.tellJoke().execute().getData();
         } catch (IOException e) {
@@ -46,8 +47,6 @@ public class FetchJokeAsyncTask extends AsyncTask<Context, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        Intent i = new Intent(context, JokeDisplayActivity.class);
-        i.putExtra(JokeDisplayActivity.EXTRA_JOKE, result);
-        context.startActivity(i);
+        mResultCallback.onResult(result);
     }
 }

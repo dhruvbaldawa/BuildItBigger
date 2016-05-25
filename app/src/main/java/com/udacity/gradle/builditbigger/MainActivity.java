@@ -1,17 +1,19 @@
 package com.udacity.gradle.builditbigger;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.dhruvb.jokeactivity.JokeDisplayActivity;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements FetchJokeAsyncTask.ResultCallback {
     private InterstitialAd mInterstitialAd;
 
     @Override
@@ -57,6 +59,12 @@ public class MainActivity extends AppCompatActivity {
             mInterstitialAd.show();
         }
         new FetchJokeAsyncTask().execute(this);
+    }
+
+    public void onResult(String result) {
+        Intent i = new Intent(this, JokeDisplayActivity.class);
+        i.putExtra(JokeDisplayActivity.EXTRA_JOKE, result);
+        startActivity(i);
     }
 
     private void requestNewInterstitial() {
