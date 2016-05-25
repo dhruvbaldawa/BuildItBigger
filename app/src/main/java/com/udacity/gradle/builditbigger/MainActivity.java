@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewStub;
+import android.widget.LinearLayout;
 
 import com.dhruvb.jokeactivity.JokeDisplayActivity;
 import com.google.android.gms.ads.AdListener;
@@ -15,11 +17,14 @@ import com.google.android.gms.ads.InterstitialAd;
 
 public class MainActivity extends AppCompatActivity implements FetchJokeAsyncTask.ResultCallback {
     private InterstitialAd mInterstitialAd;
+    private LinearLayout mLoadingOverlay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mLoadingOverlay = (LinearLayout)findViewById(R.id.loading_overlay);
+
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId(getString(R.string.interstitial_unit_id));
         mInterstitialAd.setAdListener(new AdListener() {
@@ -58,10 +63,12 @@ public class MainActivity extends AppCompatActivity implements FetchJokeAsyncTas
         if (mInterstitialAd.isLoaded()) {
             mInterstitialAd.show();
         }
+        showLoadingOverlay();
         new FetchJokeAsyncTask().execute(this);
     }
 
     public void onResult(String result) {
+        hideLoadingOverlay();
         Intent i = new Intent(this, JokeDisplayActivity.class);
         i.putExtra(JokeDisplayActivity.EXTRA_JOKE, result);
         startActivity(i);
@@ -72,5 +79,13 @@ public class MainActivity extends AppCompatActivity implements FetchJokeAsyncTas
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .build();
         mInterstitialAd.loadAd(adRequest);
+    }
+
+    private void showLoadingOverlay() {
+        mLoadingOverlay.setVisibility(View.VISIBLE);
+    }
+
+    private void hideLoadingOverlay() {
+        mLoadingOverlay.setVisibility(ViewStub.GONE);
     }
 }
