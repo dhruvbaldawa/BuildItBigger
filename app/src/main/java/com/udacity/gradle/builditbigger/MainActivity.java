@@ -1,39 +1,16 @@
 package com.udacity.gradle.builditbigger;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewStub;
-import android.widget.LinearLayout;
-
-import com.dhruvb.jokeactivity.JokeDisplayActivity;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
 
 
-public class MainActivity extends AppCompatActivity implements FetchJokeAsyncTask.ResultCallback {
-    private InterstitialAd mInterstitialAd;
-    private LinearLayout mLoadingOverlay;
-
+public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mLoadingOverlay = (LinearLayout)findViewById(R.id.loading_overlay);
-
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId(getString(R.string.interstitial_unit_id));
-        mInterstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdClosed() {
-                requestNewInterstitial();
-            }
-        });
-        requestNewInterstitial();
     }
 
 
@@ -57,35 +34,5 @@ public class MainActivity extends AppCompatActivity implements FetchJokeAsyncTas
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    public void tellJoke(View view) {
-        if (mInterstitialAd.isLoaded()) {
-            mInterstitialAd.show();
-        }
-        showLoadingOverlay();
-        new FetchJokeAsyncTask().execute(this);
-    }
-
-    public void onResult(String result) {
-        hideLoadingOverlay();
-        Intent i = new Intent(this, JokeDisplayActivity.class);
-        i.putExtra(JokeDisplayActivity.EXTRA_JOKE, result);
-        startActivity(i);
-    }
-
-    private void requestNewInterstitial() {
-        AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                .build();
-        mInterstitialAd.loadAd(adRequest);
-    }
-
-    private void showLoadingOverlay() {
-        mLoadingOverlay.setVisibility(View.VISIBLE);
-    }
-
-    private void hideLoadingOverlay() {
-        mLoadingOverlay.setVisibility(ViewStub.GONE);
     }
 }

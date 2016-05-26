@@ -1,33 +1,5 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent">
-    <fragment android:id="@+id/fragment"
+ <fragment android:id="@+id/fragment" xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:name="com.udacity.gradle.builditbigger.MainActivityFragment"
         android:layout_width="match_parent" android:layout_height="match_parent"
         tools:layout="@layout/fragment_main" />
-    <LinearLayout
-        android:id="@+id/loading_overlay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:background="#44000000"
-        android:visibility="gone"
-        >
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:indeterminate="true"
-            style="?android:attr/progressBarStyleLargeInverse"
-            />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Loading..."
-            android:textAppearance="@style/TextAppearance.AppCompat.Large.Inverse"
-            android:gravity="center"
-        />
-    </LinearLayout>
-</FrameLayout>

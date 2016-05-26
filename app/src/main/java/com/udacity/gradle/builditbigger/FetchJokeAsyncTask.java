@@ -18,7 +18,7 @@ public class FetchJokeAsyncTask extends AsyncTask<FetchJokeAsyncTask.ResultCallb
     private ResultCallback mResultCallback;
 
     public interface ResultCallback {
-        void onResult(String result);
+        void onTaskResult(String result);
     }
 
     @Override
@@ -47,6 +47,6 @@ public class FetchJokeAsyncTask extends AsyncTask<FetchJokeAsyncTask.ResultCallb
 
     @Override
     protected void onPostExecute(String result) {
-        mResultCallback.onResult(result);
+        mResultCallback.onTaskResult(result);
     }
 }
