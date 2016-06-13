@@ -34,8 +34,8 @@ dependencies {
     // Added for AdMob
     compile project(path: ':jokeprovider')
     compile project(path: ':jokeactivity')
-    compile 'com.google.android.gms:play-services:9.0.0'
     compile project(path: ':backend', configuration: 'android-endpoints')
+    freeCompile 'com.google.android.gms:play-services:9.0.0'
 }
 
 dependencies {
